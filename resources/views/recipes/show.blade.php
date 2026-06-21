@@ -6,5 +6,6 @@
         <ul>@foreach ($recipe->ingredients as $i)<li>{{ $i->name }}</li>@endforeach</ul>
         <h2>Langkah</h2>
         <p>{!! nl2br(e($recipe->instructions)) !!}</p>
+        @livewire('recipe-rating', ['recipe' => $recipe])
     </article>
 </x-layout>
