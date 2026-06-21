@@ -12,6 +12,14 @@
 
     <button wire:click="search" class="finder__search" @disabled(empty($ingredients))>Cari Resep</button>
 
+    <div class="ai">
+        <button wire:click="exploreWithAi" wire:loading.attr="disabled" @disabled(empty($ingredients))>
+            <span wire:loading.remove wire:target="exploreWithAi">Eksplor dengan AI</span>
+            <span wire:loading wire:target="exploreWithAi">Mencari ide resep...</span>
+        </button>
+        @if ($aiError)<p class="ai__error" role="alert">{{ $aiError }}</p>@endif
+    </div>
+
     @if ($searched)
         <section class="results">
             @forelse ($results as $r)

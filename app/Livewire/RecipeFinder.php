@@ -2,6 +2,8 @@
 
 namespace App\Livewire;
 
+use App\Services\Gemini\AiRecipeImporter;
+use App\Services\Gemini\GeminiRecipeClient;
 use App\Services\Matching\RecipeMatcher;
 use App\Support\IngredientNormalizer;
 use Livewire\Component;
@@ -12,6 +14,8 @@ class RecipeFinder extends Component
     public string $newIngredient = '';
     public array $results = [];
     public bool $searched = false;
+    public bool $aiLoading = false;
+    public ?string $aiError = null;
 
     public function addIngredient(): void
     {
@@ -39,6 +43,25 @@ class RecipeFinder extends Component
                 'matched' => $m->matched,
                 'missing' => $m->missing,
             ])->all();
+    }
+
+    public function exploreWithAi(
+        GeminiRecipeClient $client,
+        AiRecipeImporter $importer,
+        RecipeMatcher $matcher
+    ): void {
+        $this->aiError = null;
+        $this->aiLoading = true;
+        try {
+            $suggestions = $client->suggest($this->ingredients);
+            $importer->importMany($suggestions);
+            $this->search($matcher);
+        } catch (\Throwable $e) {
+            report($e);
+            $this->aiError = 'Gagal mengambil resep AI. Coba lagi nanti.';
+        } finally {
+            $this->aiLoading = false;
+        }
     }
 
     public function render()
