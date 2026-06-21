@@ -16,5 +16,6 @@ class DatabaseSeeder extends Seeder
     public function run(): void
     {
         $this->call(RecipeSeeder::class);
+        $this->call(AdminSeeder::class);
     }
 }
