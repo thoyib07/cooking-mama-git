@@ -35,4 +35,11 @@ return [
         ],
     ],
 
+    'gemini' => [
+        'key' => env('GEMINI_API_KEY'),
+        'endpoint' => env('GEMINI_ENDPOINT'),
+    ],
+
+    'sentry' => ['dsn' => env('SENTRY_DSN')],
+
 ];
