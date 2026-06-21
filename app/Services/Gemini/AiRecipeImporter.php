@@ -1,0 +1,50 @@
+<?php
+
+namespace App\Services\Gemini;
+
+use App\Models\Ingredient;
+use App\Models\Recipe;
+use App\Support\IngredientNormalizer;
+use Illuminate\Support\Facades\DB;
+
+class AiRecipeImporter
+{
+    public function import(array $recipeData): ?Recipe
+    {
+        $name = trim($recipeData['name']);
+        $normalizedName = IngredientNormalizer::normalize($name);
+
+        $exists = Recipe::whereRaw('LOWER(TRIM(name)) = ?', [$normalizedName])->exists();
+        if ($exists) {
+            return null;
+        }
+
+        return DB::transaction(function () use ($recipeData, $name) {
+            $recipe = Recipe::create([
+                'name' => $name,
+                'instructions' => $recipeData['instructions'],
+                'servings' => $recipeData['servings'] ?? null,
+                'image_url' => null,
+                'source' => Recipe::SOURCE_AI,
+            ]);
+            foreach ($recipeData['ingredients'] as $ing) {
+                $recipe->ingredients()->syncWithoutDetaching(
+                    Ingredient::findOrCreateNormalized($ing)
+                );
+            }
+            return $recipe->load('ingredients');
+        });
+    }
+
+    public function importMany(array $recipes): array
+    {
+        $created = [];
+        foreach ($recipes as $r) {
+            $recipe = $this->import($r);
+            if ($recipe) {
+                $created[] = $recipe;
+            }
+        }
+        return $created;
+    }
+}
