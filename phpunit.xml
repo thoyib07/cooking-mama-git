@@ -35,5 +35,6 @@
         <env name="PULSE_ENABLED" value="false"/>
         <env name="TELESCOPE_ENABLED" value="false"/>
         <env name="NIGHTWATCH_ENABLED" value="false"/>
+        <env name="VITE_DEV_SERVER_URL" value="http://localhost:5173"/>
     </php>
 </phpunit>
