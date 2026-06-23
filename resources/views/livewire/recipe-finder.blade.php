@@ -1,37 +1,79 @@
-<div class="finder">
-    <form wire:submit.prevent="addIngredient" class="finder__add">
-        <input type="text" wire:model="newIngredient" placeholder="Tambah bahan..." aria-label="Bahan">
-        <button type="submit">Tambah</button>
+<div class="space-y-4">
+    {{-- Input tambah bahan --}}
+    <form wire:submit.prevent="addIngredient" class="flex gap-2">
+        <input
+            type="text"
+            wire:model="newIngredient"
+            placeholder="Tambah bahan... (misal: telur)"
+            aria-label="Nama bahan"
+            class="flex-1 rounded-xl border border-stone-200 bg-white px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-green-600 placeholder-stone-400"
+        >
+        <button
+            type="submit"
+            class="rounded-xl bg-green-700 px-4 py-3 text-sm font-bold text-white active:bg-green-800"
+        >
+            Tambah
+        </button>
     </form>
 
-    <ul class="finder__chips">
+    {{-- Chip bahan yang sudah ditambahkan --}}
+    @if ($ingredients)
+    <div class="flex flex-wrap gap-2">
         @foreach ($ingredients as $i => $ing)
-            <li>{{ $ing }} <button wire:click="removeIngredient({{ $i }})" aria-label="Hapus">×</button></li>
+            <span class="inline-flex items-center gap-1 rounded-full bg-green-100 px-3 py-1 text-sm font-medium text-green-800">
+                {{ $ing }}
+                <button wire:click="removeIngredient({{ $i }})" aria-label="Hapus {{ $ing }}" class="text-green-600 hover:text-green-900 leading-none">&times;</button>
+            </span>
         @endforeach
-    </ul>
+    </div>
+    @endif
 
-    <button wire:click="search" class="finder__search" @disabled(empty($ingredients))>Cari Resep</button>
+    {{-- Tombol cari --}}
+    <button
+        wire:click="search"
+        @disabled(empty($ingredients))
+        class="w-full rounded-xl bg-green-700 py-3 font-bold text-white shadow-sm active:bg-green-800 disabled:opacity-40 disabled:cursor-not-allowed"
+    >
+        🔍 Cari Resep
+    </button>
 
-    <div class="ai">
-        <button wire:click="exploreWithAi" wire:loading.attr="disabled" @disabled(empty($ingredients))>
-            <span wire:loading.remove wire:target="exploreWithAi">Eksplor dengan AI</span>
-            <span wire:loading wire:target="exploreWithAi">Mencari ide resep...</span>
+    {{-- Tombol AI --}}
+    <div>
+        <button
+            wire:click="exploreWithAi"
+            wire:loading.attr="disabled"
+            @disabled(empty($ingredients))
+            class="w-full rounded-xl border border-orange-200 bg-orange-50 py-3 font-bold text-orange-600 active:bg-orange-100 disabled:opacity-40 disabled:cursor-not-allowed"
+        >
+            <span wire:loading.remove wire:target="exploreWithAi">✨ Eksplor dengan AI</span>
+            <span wire:loading wire:target="exploreWithAi">Mencari ide resep AI...</span>
         </button>
-        @if ($aiError)<p class="ai__error" role="alert">{{ $aiError }}</p>@endif
+        @if ($aiError)
+            <p class="mt-2 rounded-lg bg-red-50 px-3 py-2 text-sm text-red-600" role="alert">{{ $aiError }}</p>
+        @endif
     </div>
 
+    {{-- Hasil pencarian --}}
     @if ($searched)
-        <section class="results">
+        <section class="space-y-3">
             @forelse ($results as $r)
-                <article class="result">
-                    <a href="{{ route('recipes.show', $r['id']) }}">{{ $r['name'] }}</a>
-                    <span class="result__score">{{ (int) round($r['score'] * 100) }}% cocok</span>
+                <a href="{{ route('recipes.show', $r['id']) }}" class="block rounded-xl bg-white p-4 shadow-sm active:shadow-none">
+                    <div class="flex items-center justify-between gap-2">
+                        <span class="font-semibold text-stone-800">{{ $r['name'] }}</span>
+                        @php $pct = (int) round($r['score'] * 100); @endphp
+                        <span class="shrink-0 rounded-full px-2 py-0.5 text-xs font-bold
+                            {{ $pct >= 80 ? 'bg-green-100 text-green-700' : 'bg-amber-100 text-amber-700' }}">
+                            {{ $pct }}% cocok
+                        </span>
+                    </div>
                     @if (!empty($r['missing']))
-                        <p class="result__missing">Kurang: {{ implode(', ', $r['missing']) }}</p>
+                        <p class="mt-1 text-xs text-stone-400">Kurang: {{ implode(', ', $r['missing']) }}</p>
                     @endif
-                </article>
+                </a>
             @empty
-                <p>Tidak ada resep yang cukup cocok di database.</p>
+                <p class="rounded-xl bg-white p-4 text-center text-sm text-stone-400 shadow-sm">
+                    Tidak ada resep yang cukup cocok. Coba Eksplor dengan AI!
+                </p>
             @endforelse
         </section>
     @endif
