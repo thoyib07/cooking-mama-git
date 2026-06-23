@@ -8,7 +8,7 @@ it('sends ingredients and returns parsed recipes', function () {
     config()->set('services.gemini.key', 'test-key');
 
     $payloadText = json_encode([
-        ['name' => 'AI Stew', 'ingredients' => ['carrot', 'water'], 'instructions' => 'Cook.', 'servings' => 3],
+        ['name' => 'AI Stew', 'ingredients' => ['carrot', 'water'], 'steps' => ['Cook.'], 'servings' => 3],
     ]);
     Http::fake([
         'gemini.test/*' => Http::response([

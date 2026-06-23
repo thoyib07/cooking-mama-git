@@ -7,7 +7,7 @@ it('caches identical ingredient queries', function () {
     config()->set('services.gemini.endpoint', 'https://gemini.test/generate');
     config()->set('services.gemini.key', 'k');
 
-    $text = json_encode([['name' => 'Cached', 'ingredients' => ['a'], 'instructions' => 'b']]);
+    $text = json_encode([['name' => 'Cached', 'ingredients' => ['a'], 'steps' => ['b']]]);
     Http::fake(['gemini.test/*' => Http::response(
         ['candidates' => [['content' => ['parts' => [['text' => $text]]]]]], 200
     )]);

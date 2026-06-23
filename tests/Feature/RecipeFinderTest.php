@@ -6,7 +6,7 @@ use App\Models\Ingredient;
 use Livewire\Livewire;
 
 it('adds ingredients and returns ranked matches', function () {
-    $r = Recipe::create(['name' => 'Egg Fry', 'instructions' => 'x', 'source' => 'seed']);
+    $r = Recipe::create(['name' => 'Egg Fry', 'steps' => ['x'], 'source' => 'seed']);
     $r->ingredients()->attach(Ingredient::findOrCreateNormalized('egg'));
     $r->ingredients()->attach(Ingredient::findOrCreateNormalized('salt'));
 

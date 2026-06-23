@@ -6,7 +6,7 @@ use App\Services\Matching\RecipeMatcher;
 
 function makeRecipe(string $name, array $ings): Recipe
 {
-    $r = Recipe::create(['name' => $name, 'instructions' => 'x', 'source' => Recipe::SOURCE_SEED]);
+    $r = Recipe::create(['name' => $name, 'steps' => ['x'], 'source' => Recipe::SOURCE_SEED]);
     foreach ($ings as $i) {
         $r->ingredients()->attach(Ingredient::findOrCreateNormalized($i));
     }

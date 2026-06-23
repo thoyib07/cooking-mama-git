@@ -6,7 +6,7 @@ use App\Models\Rating;
 use Livewire\Livewire;
 
 it('records a rating once per session', function () {
-    $recipe = Recipe::create(['name' => 'X', 'instructions' => 'y', 'source' => 'seed']);
+    $recipe = Recipe::create(['name' => 'X', 'steps' => ['y'], 'source' => 'seed']);
 
     Livewire::test(RecipeRating::class, ['recipe' => $recipe])
         ->call('rate', 5)

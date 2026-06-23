@@ -8,7 +8,7 @@ use Mockery;
 it('explores with AI, imports recipes, and shows them', function () {
     $fake = Mockery::mock(GeminiRecipeClient::class);
     $fake->shouldReceive('suggest')->once()->andReturn([
-        ['name' => 'AI Toast', 'ingredients' => ['bread', 'butter'], 'instructions' => 'Toast it.', 'servings' => 1],
+        ['name' => 'AI Toast', 'ingredients' => ['bread', 'butter'], 'steps' => ['Toast it.'], 'servings' => 1],
     ]);
     app()->instance(GeminiRecipeClient::class, $fake);
 

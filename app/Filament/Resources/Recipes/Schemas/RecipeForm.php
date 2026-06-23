@@ -15,7 +15,12 @@ class RecipeForm
         return $schema
             ->components([
                 TextInput::make('name')->required(),
-                Textarea::make('instructions')->required()->rows(8),
+                Textarea::make('steps')
+                    ->label('Langkah (satu langkah per baris)')
+                    ->required()
+                    ->rows(8)
+                    // model stores array<string>; textarea edits as newline-joined text
+                    ->formatStateUsing(fn ($state) => is_array($state) ? implode("\n", $state) : $state),
                 FileUpload::make('image_url')->image()->directory('recipes')->nullable(),
                 TextInput::make('servings')->numeric()->nullable(),
                 Select::make('source')->options([

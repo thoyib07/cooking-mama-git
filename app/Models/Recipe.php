@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use App\Support\RecipeSteps;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -9,9 +11,19 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 class Recipe extends Model
 {
     public const SOURCE_SEED = 'seed';
+
     public const SOURCE_AI = 'ai';
 
-    protected $fillable = ['name', 'instructions', 'image_url', 'source', 'servings'];
+    protected $fillable = ['name', 'steps', 'image_url', 'source', 'servings'];
+
+    protected function steps(): Attribute
+    {
+        // every write path (Filament string, AI array, seeder) normalizes here
+        return Attribute::make(
+            get: fn ($value) => json_decode($value ?? '[]', true) ?: [],
+            set: fn ($value) => json_encode(RecipeSteps::normalize($value)),
+        );
+    }
 
     public function ingredients(): BelongsToMany
     {

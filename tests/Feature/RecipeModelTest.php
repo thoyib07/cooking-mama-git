@@ -6,7 +6,7 @@ use App\Models\Ingredient;
 it('attaches normalized ingredients to a recipe', function () {
     $recipe = Recipe::create([
         'name' => 'Omelette',
-        'instructions' => 'Beat eggs, fry.',
+        'steps' => ['Beat eggs.', 'Fry.'],
         'source' => Recipe::SOURCE_SEED,
         'servings' => 2,
     ]);

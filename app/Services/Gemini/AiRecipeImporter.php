@@ -22,7 +22,7 @@ class AiRecipeImporter
         return DB::transaction(function () use ($recipeData, $name) {
             $recipe = Recipe::create([
                 'name' => $name,
-                'instructions' => $recipeData['instructions'],
+                'steps' => $recipeData['steps'],
                 'servings' => $recipeData['servings'] ?? null,
                 'image_url' => null,
                 'source' => Recipe::SOURCE_AI,
@@ -32,6 +32,7 @@ class AiRecipeImporter
                     Ingredient::findOrCreateNormalized($ing)
                 );
             }
+
             return $recipe->load('ingredients');
         });
     }
@@ -45,6 +46,7 @@ class AiRecipeImporter
                 $created[] = $recipe;
             }
         }
+
         return $created;
     }
 }
