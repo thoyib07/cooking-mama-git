@@ -1,11 +1,54 @@
 <x-layout>
-    <article class="recipe">
-        <h1>{{ $recipe->name }}</h1>
-        <img src="{{ $recipe->image_url ?? asset('images/recipe-placeholder.png') }}" alt="{{ $recipe->name }}">
-        <h2>Bahan</h2>
-        <ul>@foreach ($recipe->ingredients as $i)<li>{{ $i->name }}</li>@endforeach</ul>
-        <h2>Langkah</h2>
-        <ol>@foreach ($recipe->steps as $step)<li>{{ $step }}</li>@endforeach</ol>
-        @livewire('recipe-rating', ['recipe' => $recipe])
+    <article class="space-y-5">
+        {{-- Gambar --}}
+        <div class="overflow-hidden rounded-2xl bg-amber-100 h-48 flex items-center justify-center">
+            @if ($recipe->image_url)
+                <img src="{{ $recipe->image_url }}" alt="{{ $recipe->name }}" class="w-full h-full object-cover">
+            @else
+                <span class="text-6xl">🍳</span>
+            @endif
+        </div>
+
+        {{-- Judul + meta --}}
+        <div>
+            <h1 class="text-2xl font-bold text-stone-800">{{ $recipe->name }}</h1>
+            @if ($recipe->servings)
+                <span class="mt-1 inline-block rounded-full bg-stone-100 px-3 py-0.5 text-xs text-stone-500">
+                    🍽️ {{ $recipe->servings }} porsi
+                </span>
+            @endif
+        </div>
+
+        {{-- Bahan --}}
+        <section>
+            <h2 class="mb-2 font-bold text-stone-700">Bahan</h2>
+            <div class="flex flex-wrap gap-2">
+                @foreach ($recipe->ingredients as $ingredient)
+                    <span class="rounded-lg bg-stone-100 px-3 py-1 text-sm text-stone-700">
+                        {{ $ingredient->name }}
+                    </span>
+                @endforeach
+            </div>
+        </section>
+
+        {{-- Langkah --}}
+        <section>
+            <h2 class="mb-3 font-bold text-stone-700">Langkah Memasak</h2>
+            <ol class="space-y-3">
+                @foreach ($recipe->steps as $index => $step)
+                    <li class="flex items-start gap-3">
+                        <span class="mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-green-700 text-xs font-bold text-white">
+                            {{ $index + 1 }}
+                        </span>
+                        <span class="text-sm leading-relaxed text-stone-700">{{ $step }}</span>
+                    </li>
+                @endforeach
+            </ol>
+        </section>
+
+        {{-- Rating --}}
+        <section class="rounded-xl bg-white p-4 shadow-sm">
+            @livewire('recipe-rating', ['recipe' => $recipe])
+        </section>
     </article>
 </x-layout>
