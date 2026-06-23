@@ -19,3 +19,11 @@ Yang belum dibuat:
   prompt Gemini, dan tampilan.
 - **Mode masak interaktif** — tampilan langkah-per-langkah dengan timer, untuk
   diikuti sambil memasak. Bergantung pada metadata per langkah di atas.
+
+## Bottom navigation (lanjutan)
+
+Tab **Resep** dan **Favorit** di bottom nav saat ini adalah tautan mati (`href="#"`).
+
+Yang perlu dibuat:
+- **Halaman daftar semua resep** — route `/recipes` → view dengan list seluruh resep di DB, agar tab "Resep" punya tujuan.
+- **Fitur favorit** — simpan resep favorit per sesi/user, agar tab "Favorit" punya konten.
