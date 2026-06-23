@@ -1,0 +1,200 @@
+<h2>Mockup Tampilan Cooking Mama</h2>
+<p class="subtitle">Gaya: Hangat & Nyaman • Mobile-first • Bottom navigation. Klik layar mana yang terasa paling pas.</p>
+
+<style>
+  .phone-row { display: flex; gap: 24px; justify-content: center; flex-wrap: wrap; margin-top: 16px; }
+  .phone-wrap { display: flex; flex-direction: column; align-items: center; gap: 8px; }
+  .phone-label { font-size: 13px; font-weight: 600; color: #555; }
+  .phone {
+    width: 220px; height: 440px; border-radius: 28px;
+    background: #fffbf0; border: 3px solid #d6cfc4;
+    overflow: hidden; display: flex; flex-direction: column;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.13);
+    position: relative; cursor: pointer;
+    transition: box-shadow 0.2s, transform 0.15s;
+  }
+  .phone:hover { box-shadow: 0 12px 32px rgba(0,0,0,0.2); transform: translateY(-2px); }
+  .phone.selected { border-color: #2e7d32; box-shadow: 0 0 0 4px #2e7d3244; }
+
+  /* Header */
+  .ph-header {
+    background: #2e7d32; color: white; padding: 10px 12px 8px;
+    font-size: 13px; font-weight: 700; display: flex; align-items: center; gap: 6px;
+    flex-shrink: 0;
+  }
+  .ph-header .emoji { font-size: 16px; }
+
+  /* Body */
+  .ph-body { flex: 1; overflow: hidden; padding: 10px; display: flex; flex-direction: column; gap: 8px; }
+
+  /* Bottom nav */
+  .ph-nav {
+    background: white; border-top: 1px solid #e8dfd0;
+    display: flex; justify-content: space-around; padding: 6px 0 4px;
+    flex-shrink: 0;
+  }
+  .ph-nav-item { display: flex; flex-direction: column; align-items: center; gap: 1px; font-size: 9px; color: #999; }
+  .ph-nav-item.active { color: #2e7d32; }
+  .ph-nav-item .nav-icon { font-size: 16px; }
+
+  /* Chip */
+  .ph-chip {
+    display: inline-flex; align-items: center; gap: 3px;
+    background: #dcfce7; color: #166534; border-radius: 20px;
+    padding: 2px 8px; font-size: 9px; font-weight: 600;
+  }
+
+  /* Input bar */
+  .ph-input {
+    background: white; border: 1.5px solid #d6cfc4; border-radius: 8px;
+    padding: 6px 8px; font-size: 10px; color: #aaa; display: flex; align-items: center; gap: 4px;
+  }
+
+  /* Buttons */
+  .ph-btn-primary {
+    background: #2e7d32; color: white; border-radius: 8px;
+    padding: 6px; font-size: 10px; font-weight: 700; text-align: center;
+  }
+  .ph-btn-secondary {
+    background: #fff7ed; color: #c2410c; border: 1.5px solid #fed7aa;
+    border-radius: 8px; padding: 6px; font-size: 10px; font-weight: 700; text-align: center;
+  }
+
+  /* Card */
+  .ph-card {
+    background: white; border-radius: 10px; padding: 8px;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.08); display: flex; align-items: center; gap: 8px;
+  }
+  .ph-card-img { width: 36px; height: 36px; background: #fde68a; border-radius: 8px; flex-shrink: 0; display:flex;align-items:center;justify-content:center;font-size:18px; }
+  .ph-card-name { font-size: 10px; font-weight: 700; color: #292524; }
+  .ph-card-badge { font-size: 8px; background: #fef3c7; color: #b45309; border-radius: 10px; padding: 1px 5px; font-weight: 600; }
+  .ph-card-miss { font-size: 8px; color: #a8a29e; }
+
+  /* Detail */
+  .ph-section-title { font-size: 9px; font-weight: 700; color: #78716c; text-transform: uppercase; letter-spacing: 0.5px; }
+  .ph-step { font-size: 8.5px; color: #44403c; display: flex; gap: 5px; line-height: 1.4; }
+  .ph-step-num { background: #2e7d32; color:white; border-radius: 50%; width: 14px; height: 14px; font-size: 7px; display:flex;align-items:center;justify-content:center;flex-shrink:0; }
+  .ph-ing-pill { display:inline-block; background:#f5f5f4; border-radius:6px; padding:2px 6px; font-size:8px; color:#57534e; margin:1px; }
+
+  /* Stars */
+  .ph-stars { color: #f59e0b; font-size: 14px; letter-spacing: 2px; }
+</style>
+
+<div class="phone-row">
+
+  <!-- SCREEN 1: Finder -->
+  <div class="phone-wrap">
+    <div class="phone" id="s1" onclick="toggleSelect(this)" data-choice="finder">
+      <div class="ph-header"><span class="emoji">🍳</span> Cooking Mama</div>
+      <div class="ph-body">
+        <div style="font-size:11px;font-weight:700;color:#292524;">Bahan yang kamu punya:</div>
+        <div style="display:flex;flex-wrap:wrap;gap:4px;">
+          <span class="ph-chip">🥚 telur ×</span>
+          <span class="ph-chip">🧄 bawang putih ×</span>
+          <span class="ph-chip">🧂 garam ×</span>
+        </div>
+        <div class="ph-input"><span style="font-size:12px;">+</span> Tambah bahan...</div>
+        <div class="ph-btn-primary">🔍 Cari Resep</div>
+        <div class="ph-btn-secondary">✨ Eksplor dengan AI</div>
+        <div style="font-size:9px;color:#a8a29e;text-align:center;margin-top:2px;">atau minta ide resep dari AI</div>
+      </div>
+      <div class="ph-nav">
+        <div class="ph-nav-item active"><span class="nav-icon">🔍</span>Cari</div>
+        <div class="ph-nav-item"><span class="nav-icon">📖</span>Resep</div>
+        <div class="ph-nav-item"><span class="nav-icon">⭐</span>Favorit</div>
+      </div>
+    </div>
+    <div class="phone-label">1. Layar Cari Bahan</div>
+  </div>
+
+  <!-- SCREEN 2: Results -->
+  <div class="phone-wrap">
+    <div class="phone" id="s2" onclick="toggleSelect(this)" data-choice="results">
+      <div class="ph-header"><span class="emoji">🍳</span> Hasil Pencarian</div>
+      <div class="ph-body">
+        <div style="font-size:9px;color:#78716c;">3 resep ditemukan untuk 3 bahan</div>
+        <div class="ph-card">
+          <div class="ph-card-img">🍳</div>
+          <div style="flex:1">
+            <div class="ph-card-name">Telur Dadar</div>
+            <div style="display:flex;align-items:center;gap:4px;margin-top:2px;">
+              <span class="ph-card-badge">100% cocok</span>
+            </div>
+          </div>
+        </div>
+        <div class="ph-card">
+          <div class="ph-card-img">🍚</div>
+          <div style="flex:1">
+            <div class="ph-card-name">Nasi Goreng</div>
+            <div style="display:flex;align-items:center;gap:4px;margin-top:2px;">
+              <span class="ph-card-badge" style="background:#fef9c3;color:#a16207;">60% cocok</span>
+            </div>
+            <div class="ph-card-miss">Kurang: nasi, kecap</div>
+          </div>
+        </div>
+        <div class="ph-card">
+          <div class="ph-card-img">🥬</div>
+          <div style="flex:1">
+            <div class="ph-card-name">Tumis Kangkung</div>
+            <div style="display:flex;align-items:center;gap:4px;margin-top:2px;">
+              <span class="ph-card-badge" style="background:#fef9c3;color:#a16207;">50% cocok</span>
+            </div>
+            <div class="ph-card-miss">Kurang: kangkung, minyak</div>
+          </div>
+        </div>
+      </div>
+      <div class="ph-nav">
+        <div class="ph-nav-item active"><span class="nav-icon">🔍</span>Cari</div>
+        <div class="ph-nav-item"><span class="nav-icon">📖</span>Resep</div>
+        <div class="ph-nav-item"><span class="nav-icon">⭐</span>Favorit</div>
+      </div>
+    </div>
+    <div class="phone-label">2. Layar Hasil</div>
+  </div>
+
+  <!-- SCREEN 3: Detail -->
+  <div class="phone-wrap">
+    <div class="phone" id="s3" onclick="toggleSelect(this)" data-choice="detail">
+      <div class="ph-header" style="gap:4px;">
+        <span style="font-size:10px;opacity:0.8;">← Kembali</span>
+        <span style="flex:1;text-align:center;">Telur Dadar</span>
+        <span class="emoji">🍳</span>
+      </div>
+      <div class="ph-body" style="gap:6px;">
+        <div style="background:#fde68a;border-radius:10px;height:60px;display:flex;align-items:center;justify-content:center;font-size:28px;">🍳</div>
+        <div style="display:flex;align-items:center;gap:6px;">
+          <span style="font-size:10px;color:#57534e;">2 porsi</span>
+          <span style="font-size:10px;color:#57534e;">•</span>
+          <span style="font-size:10px;color:#57534e;">Sumber: Seed</span>
+        </div>
+        <div class="ph-section-title">Bahan</div>
+        <div><span class="ph-ing-pill">🥚 telur</span><span class="ph-ing-pill">🧂 garam</span><span class="ph-ing-pill">🫙 minyak</span></div>
+        <div class="ph-section-title">Langkah Memasak</div>
+        <div class="ph-step"><span class="ph-step-num">1</span><span>Pecahkan telur ke mangkuk, beri sejumput garam.</span></div>
+        <div class="ph-step"><span class="ph-step-num">2</span><span>Kocok telur hingga berbusa rata.</span></div>
+        <div class="ph-step"><span class="ph-step-num">3</span><span>Panaskan minyak, tuang telur...</span></div>
+        <div class="ph-section-title">Nilai Resep Ini</div>
+        <div class="ph-stars">★★★★☆</div>
+      </div>
+      <div class="ph-nav">
+        <div class="ph-nav-item"><span class="nav-icon">🔍</span>Cari</div>
+        <div class="ph-nav-item active"><span class="nav-icon">📖</span>Resep</div>
+        <div class="ph-nav-item"><span class="nav-icon">⭐</span>Favorit</div>
+      </div>
+    </div>
+    <div class="phone-label">3. Detail Resep</div>
+  </div>
+
+</div>
+
+<div style="margin-top:20px;padding:12px;background:#f0fdf4;border-radius:10px;border:1px solid #bbf7d0;text-align:center;">
+  <strong style="color:#166534;font-size:13px;">Palet Warna</strong><br>
+  <div style="display:flex;justify-content:center;gap:8px;margin-top:8px;flex-wrap:wrap;">
+    <span style="background:#2e7d32;color:white;padding:4px 10px;border-radius:6px;font-size:11px;">■ Hijau Sage (header, tombol)</span>
+    <span style="background:#fffbf0;color:#292524;border:1px solid #d6cfc4;padding:4px 10px;border-radius:6px;font-size:11px;">■ Krem (background)</span>
+    <span style="background:#f59e0b;color:white;padding:4px 10px;border-radius:6px;font-size:11px;">■ Kuning Hangat (bintang, aksen)</span>
+    <span style="background:#c2410c;color:white;padding:4px 10px;border-radius:6px;font-size:11px;">■ Oranye (tombol AI)</span>
+  </div>
+</div>
+
+<p style="text-align:center;margin-top:12px;font-size:12px;color:#78716c;">Klik layar mana saja yang ingin dikomen, atau ketik di terminal apa yang ingin diubah.</p>
