@@ -38,9 +38,11 @@ class RecipeRating extends Component
 
     private function refreshStats(): void
     {
-        $ratings = Rating::where('recipe_id', $this->recipe->id);
-        $this->count = (clone $ratings)->count();
-        $this->average = round((float) (clone $ratings)->avg('value'), 1);
+        $stats = Rating::where('recipe_id', $this->recipe->id)
+            ->selectRaw('COUNT(*) as cnt, COALESCE(AVG(value), 0) as avg')
+            ->first();
+        $this->count = (int) $stats->cnt;
+        $this->average = round((float) $stats->avg, 1);
     }
 
     public function render()
