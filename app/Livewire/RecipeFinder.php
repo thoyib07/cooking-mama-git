@@ -58,7 +58,9 @@ class RecipeFinder extends Component
             $this->search($matcher);
         } catch (\Throwable $e) {
             report($e);
-            $this->aiError = 'Gagal mengambil resep AI. Coba lagi nanti.';
+            $this->aiError = str_contains($e->getMessage(), 'rate limit')
+                ? 'Gemini sedang sibuk, tunggu sebentar lalu coba lagi.'
+                : 'Gagal mengambil resep AI. Coba lagi nanti.';
         } finally {
             $this->aiLoading = false;
         }

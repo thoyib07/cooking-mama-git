@@ -42,7 +42,9 @@ class GeminiRecipeClient
             ]);
 
         if ($response->failed()) {
-            throw new RuntimeException('Gemini request failed: '.$response->status());
+            \Log::error('Gemini failed', ['status' => $response->status(), 'body' => $response->body()]);
+            $msg = $response->status() === 429 ? 'Gemini rate limit reached. Try again in a moment.' : 'Gemini request failed: '.$response->status();
+            throw new RuntimeException($msg);
         }
 
         $text = data_get($response->json(), 'candidates.0.content.parts.0.text');
