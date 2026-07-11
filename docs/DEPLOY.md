@@ -15,12 +15,18 @@
 ### 2. Deploy to PaaS
 
 **Render:**
+Render no longer offers a native PHP runtime for new Web Services — deploy with the
+`Dockerfile` at the repo root instead:
 1. Create a new "Web Service" from this GitHub repo
-2. Build command: `npm install && npm run build && composer install --no-dev --optimize-autoloader && php artisan config:cache`
-3. Start command: `vendor/bin/heroku-php-apache2 public/`
-4. Add release command (Pre-deploy): `php artisan migrate --force && php artisan db:seed --class=AdminSeeder --force`
+2. Language: `Docker` (Dockerfile Path defaults to `./Dockerfile`, no change needed)
+3. Branch: the branch you want to deploy (e.g. `deploy-main`)
+4. No separate build/start command needed — the Dockerfile handles asset build,
+   `composer install`, `migrate --force`, `db:seed --class=AdminSeeder --force`, and
+   starting the server on Render's `$PORT` automatically on every container start
+   (migrate/seed are idempotent, safe to re-run).
+5. Instance Type: `Free`
 
-**Railway/Heroku:** Use the `Procfile` at the repo root.
+**Railway/Heroku:** Use the `Procfile` at the repo root (native PHP buildpack, no Docker needed).
 
 ### 3. Set Environment Variables
 
