@@ -23,7 +23,7 @@ npm run dev / npm run build  # vite assets
 
 ## Architecture
 
-**Ingredient matching is the core.** `RecipeMatcher::search()` (app/Services/Matching) takes raw ingredient strings, normalizes them, and scores every recipe as `matched / total ingredients`. Recipes scoring `>= threshold` (default 0.5) come back as `MatchResult` sorted by score. Matching is **exact-name on normalized strings** — there is no fuzzy/synonym matching.
+**Ingredient matching is the core.** `RecipeMatcher::search()` (app/Services/Matching) takes raw ingredient strings, normalizes them, and scores every recipe as `matched / total ingredients`. There is no threshold — every recipe with at least one ingredient comes back as a `MatchResult`, sorted by score descending, then by fewest missing ingredients as a tiebreaker. Matching is **exact-name on normalized strings** — there is no fuzzy/synonym matching.
 
 **`IngredientNormalizer::normalize()` is the single join key for the whole domain.** Lowercase → trim → strip surrounding punctuation → collapse whitespace. Stored ingredient names, user input, AI imports, and dedup checks all pass through it. If you change normalization, existing rows won't match new input — treat it as a data-format change, not a cosmetic one.
 

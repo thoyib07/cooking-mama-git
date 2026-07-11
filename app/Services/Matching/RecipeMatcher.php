@@ -7,7 +7,7 @@ use App\Support\IngredientNormalizer;
 
 class RecipeMatcher
 {
-    public function search(array $rawIngredientNames, float $threshold = 0.5): array
+    public function search(array $rawIngredientNames): array
     {
         $have = collect($rawIngredientNames)
             ->map(fn ($n) => IngredientNormalizer::normalize($n))
@@ -29,12 +29,11 @@ class RecipeMatcher
             $missing = $names->reject(fn ($n) => $have->contains($n))->values();
             $score = $total > 0 ? round($matched->count() / $total, 4) : 0.0;
 
-            if ($score >= $threshold) {
-                $results[] = new MatchResult($recipe, $score, $matched->all(), $missing->all());
-            }
+            $results[] = new MatchResult($recipe, $score, $matched->all(), $missing->all());
         }
 
-        usort($results, fn ($a, $b) => $b->score <=> $a->score);
+        usort($results, fn ($a, $b) => $b->score <=> $a->score ?: count($a->missing) <=> count($b->missing));
+
         return $results;
     }
 }

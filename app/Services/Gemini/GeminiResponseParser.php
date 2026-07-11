@@ -14,6 +14,9 @@ class GeminiResponseParser
 
         $data = json_decode($clean, true);
         if (! is_array($data)) {
+            $data = $this->extractJsonArray($clean);
+        }
+        if (! is_array($data)) {
             throw new InvalidArgumentException('Gemini response is not valid JSON.');
         }
 
@@ -34,5 +37,38 @@ class GeminiResponseParser
                 'servings' => isset($r['servings']) ? (int) $r['servings'] : null,
             ];
         }, $recipes);
+    }
+
+    /**
+     * Scans for a top-level `[...]` span and validates it looks like a recipe
+     * list before accepting it, so stray brackets in surrounding prose
+     * (e.g. "[1]" citations added by search grounding) aren't mistaken for
+     * the JSON payload.
+     */
+    private function extractJsonArray(string $text): ?array
+    {
+        $offset = 0;
+        $length = strlen($text);
+
+        while (($start = strpos($text, '[', $offset)) !== false) {
+            $depth = 0;
+            for ($i = $start; $i < $length; $i++) {
+                if ($text[$i] === '[') {
+                    $depth++;
+                } elseif ($text[$i] === ']') {
+                    $depth--;
+                    if ($depth === 0) {
+                        $candidate = json_decode(substr($text, $start, $i - $start + 1), true);
+                        if (is_array($candidate) && isset($candidate[0]['name'])) {
+                            return $candidate;
+                        }
+                        break;
+                    }
+                }
+            }
+            $offset = $start + 1;
+        }
+
+        return null;
     }
 }

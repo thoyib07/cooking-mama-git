@@ -2,8 +2,8 @@
 
 namespace App\Livewire;
 
+use App\Services\Ai\AiRecipeClient;
 use App\Services\Gemini\AiRecipeImporter;
-use App\Services\Gemini\GeminiRecipeClient;
 use App\Services\Matching\RecipeMatcher;
 use App\Support\IngredientNormalizer;
 use Livewire\Component;
@@ -46,7 +46,7 @@ class RecipeFinder extends Component
     }
 
     public function exploreWithAi(
-        GeminiRecipeClient $client,
+        AiRecipeClient $client,
         AiRecipeImporter $importer,
         RecipeMatcher $matcher
     ): void {

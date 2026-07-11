@@ -2,12 +2,14 @@
 
 namespace App\Services\Gemini;
 
+use App\Services\Ai\AiRecipeClient;
+use App\Services\Ai\RecipePrompt;
 use App\Support\IngredientNormalizer;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Http;
 use RuntimeException;
 
-class GeminiRecipeClient
+class GeminiRecipeClient implements AiRecipeClient
 {
     public function __construct(private GeminiResponseParser $parser = new GeminiResponseParser) {}
 
@@ -30,15 +32,11 @@ class GeminiRecipeClient
             throw new RuntimeException('Gemini is not configured.');
         }
 
-        $list = implode(', ', $ingredientNames);
-        $prompt = "Beri 3 ide resep memakai sebagian besar bahan ini: {$list}. "
-            .'Balas HANYA JSON array. Tiap item: {name, ingredients (array string), '
-            .'steps (array string, tiap elemen satu langkah memasak yang rinci dan berurutan), servings (number)}.';
-
         $response = Http::timeout(30)
             ->withQueryParameters(['key' => $key])
             ->post($endpoint, [
-                'contents' => [['parts' => [['text' => $prompt]]]],
+                'contents' => [['parts' => [['text' => RecipePrompt::build($ingredientNames)]]]],
+                'tools' => [['google_search' => new \stdClass]],
             ]);
 
         if ($response->failed()) {

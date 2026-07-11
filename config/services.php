@@ -40,6 +40,18 @@ return [
         'endpoint' => env('GEMINI_ENDPOINT'),
     ],
 
+    'openrouter' => [
+        'key' => env('OPENROUTER_API_KEY'),
+        'endpoint' => env('OPENROUTER_ENDPOINT', 'https://openrouter.ai/api/v1/chat/completions'),
+        'model' => env('OPENROUTER_MODEL', 'deepseek/deepseek-r1:free'),
+    ],
+
+    'groq' => [
+        'key' => env('GROQ_API_KEY'),
+        'endpoint' => env('GROQ_ENDPOINT', 'https://api.groq.com/openai/v1/chat/completions'),
+        'model' => env('GROQ_MODEL', 'llama-3.3-70b-versatile'),
+    ],
+
     'sentry' => ['dsn' => env('SENTRY_DSN')],
 
 ];

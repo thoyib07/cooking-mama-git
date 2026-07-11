@@ -2,6 +2,10 @@
 
 namespace App\Providers;
 
+use App\Services\Ai\AiRecipeClient;
+use App\Services\Ai\FallbackAiRecipeClient;
+use App\Services\Gemini\GeminiRecipeClient;
+use App\Services\Groq\GroqRecipeClient;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -11,7 +15,10 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        //
+        $this->app->bind(AiRecipeClient::class, fn ($app) => new FallbackAiRecipeClient(
+            $app->make(GeminiRecipeClient::class),
+            $app->make(GroqRecipeClient::class),
+        ));
     }
 
     /**

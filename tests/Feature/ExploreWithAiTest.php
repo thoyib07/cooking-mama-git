@@ -1,16 +1,16 @@
 <?php
 
 use App\Livewire\RecipeFinder;
-use App\Services\Gemini\GeminiRecipeClient;
+use App\Services\Ai\AiRecipeClient;
 use Livewire\Livewire;
 use Mockery;
 
 it('explores with AI, imports recipes, and shows them', function () {
-    $fake = Mockery::mock(GeminiRecipeClient::class);
+    $fake = Mockery::mock(AiRecipeClient::class);
     $fake->shouldReceive('suggest')->once()->andReturn([
         ['name' => 'AI Toast', 'ingredients' => ['bread', 'butter'], 'steps' => ['Toast it.'], 'servings' => 1],
     ]);
-    app()->instance(GeminiRecipeClient::class, $fake);
+    app()->instance(AiRecipeClient::class, $fake);
 
     Livewire::test(RecipeFinder::class)
         ->set('ingredients', ['bread', 'butter'])
@@ -20,9 +20,9 @@ it('explores with AI, imports recipes, and shows them', function () {
 });
 
 it('reports a friendly error when AI fails', function () {
-    $fake = Mockery::mock(GeminiRecipeClient::class);
+    $fake = Mockery::mock(AiRecipeClient::class);
     $fake->shouldReceive('suggest')->andThrow(new RuntimeException('boom'));
-    app()->instance(GeminiRecipeClient::class, $fake);
+    app()->instance(AiRecipeClient::class, $fake);
 
     Livewire::test(RecipeFinder::class)
         ->set('ingredients', ['bread'])

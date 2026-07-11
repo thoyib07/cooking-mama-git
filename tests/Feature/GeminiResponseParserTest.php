@@ -28,3 +28,18 @@ it('strips code fences before parsing', function () {
 it('throws on garbage', function () {
     (new GeminiResponseParser())->parse('not json');
 })->throws(InvalidArgumentException::class);
+
+it('extracts the JSON array when grounding adds surrounding prose', function () {
+    $raw = "Berikut resepnya berdasarkan hasil pencarian:\n"
+        .'[{"name":"Soup","ingredients":["Water"],"steps":["Boil."]}]'
+        ."\nSemoga membantu!";
+    $out = (new GeminiResponseParser())->parse($raw);
+    expect($out[0]['name'])->toBe('Soup');
+});
+
+it('skips stray citation brackets left by search grounding', function () {
+    $raw = 'Berikut resepnya [1] berdasarkan sumber [2]: '
+        .'[{"name":"Soup","ingredients":["Water"],"steps":["Boil."]}] [3]';
+    $out = (new GeminiResponseParser())->parse($raw);
+    expect($out[0]['name'])->toBe('Soup');
+});
