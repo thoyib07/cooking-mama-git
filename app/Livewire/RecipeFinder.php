@@ -3,26 +3,51 @@
 namespace App\Livewire;
 
 use App\Services\Ai\AiRecipeClient;
+use App\Services\Ai\IngredientValidator;
 use App\Services\Gemini\AiRecipeImporter;
 use App\Services\Matching\RecipeMatcher;
+use App\Support\IngredientCatalog;
 use App\Support\IngredientNormalizer;
+use App\Support\IngredientPlausibility;
 use Livewire\Component;
 
 class RecipeFinder extends Component
 {
     public array $ingredients = [];
+
     public string $newIngredient = '';
+
     public array $results = [];
+
     public bool $searched = false;
+
     public bool $aiLoading = false;
+
     public ?string $aiError = null;
+
+    public ?string $aiNotice = null;
+
+    public ?string $ingredientError = null;
 
     public function addIngredient(): void
     {
+        $this->ingredientError = null;
         $name = IngredientNormalizer::normalize($this->newIngredient);
-        if ($name !== '' && !in_array($name, $this->ingredients, true)) {
-            $this->ingredients[] = $name;
+
+        if ($name === '' || in_array($name, $this->ingredients, true)) {
+            $this->newIngredient = '';
+
+            return;
         }
+
+        if (! IngredientPlausibility::looksLikeWord($name) && ! IngredientCatalog::isKnown($name)) {
+            $this->ingredientError = "Bahan \"{$name}\" tidak dikenali. Periksa lagi penulisannya.";
+            $this->newIngredient = '';
+
+            return;
+        }
+
+        $this->ingredients[] = $name;
         $this->newIngredient = '';
     }
 
@@ -48,12 +73,29 @@ class RecipeFinder extends Component
     public function exploreWithAi(
         AiRecipeClient $client,
         AiRecipeImporter $importer,
-        RecipeMatcher $matcher
+        RecipeMatcher $matcher,
+        IngredientValidator $validator
     ): void {
         $this->aiError = null;
+        $this->aiNotice = null;
         $this->aiLoading = true;
         try {
-            $suggestions = $client->suggest($this->ingredients);
+            $plausible = collect($this->ingredients)
+                ->filter(fn ($i) => IngredientCatalog::isKnown($i) || $validator->isPlausible($i))
+                ->values();
+
+            $ignored = collect($this->ingredients)->diff($plausible);
+            if ($ignored->isNotEmpty()) {
+                $this->aiNotice = 'Bahan berikut diabaikan karena tidak dikenali AI: '.$ignored->implode(', ').'.';
+            }
+
+            if ($plausible->isEmpty()) {
+                $this->aiError = 'Tidak ada bahan yang dikenali untuk dicari dengan AI.';
+
+                return;
+            }
+
+            $suggestions = $client->suggest($plausible->all());
             $importer->importMany($suggestions);
             $this->search($matcher);
         } catch (\Throwable $e) {

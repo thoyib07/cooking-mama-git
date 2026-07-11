@@ -16,6 +16,10 @@
         </button>
     </form>
 
+    @if ($ingredientError)
+        <p class="rounded-lg bg-red-50 px-3 py-2 text-sm text-red-600" role="alert">{{ $ingredientError }}</p>
+    @endif
+
     {{-- Chip bahan yang sudah ditambahkan --}}
     @if ($ingredients)
     <div class="flex flex-wrap gap-2">
@@ -48,6 +52,9 @@
             <span wire:loading.remove wire:target="exploreWithAi">✨ Eksplor dengan AI</span>
             <span wire:loading wire:target="exploreWithAi">Mencari ide resep AI...</span>
         </button>
+        @if ($aiNotice)
+            <p class="mt-2 rounded-lg bg-amber-50 px-3 py-2 text-sm text-amber-700" role="status">{{ $aiNotice }}</p>
+        @endif
         @if ($aiError)
             <p class="mt-2 rounded-lg bg-red-50 px-3 py-2 text-sm text-red-600" role="alert">{{ $aiError }}</p>
         @endif

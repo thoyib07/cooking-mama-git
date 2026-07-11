@@ -1,8 +1,8 @@
 <?php
 
 use App\Livewire\RecipeFinder;
-use App\Models\Recipe;
 use App\Models\Ingredient;
+use App\Models\Recipe;
 use Livewire\Livewire;
 
 it('adds ingredients and returns ranked matches', function () {
@@ -16,4 +16,11 @@ it('adds ingredients and returns ranked matches', function () {
         ->call('search')
         ->assertSet('results.0.name', 'Egg Fry')
         ->assertSet('results.0.score', 1.0);
+});
+
+it('rejects gibberish ingredient input with an error message', function () {
+    Livewire::test(RecipeFinder::class)
+        ->set('newIngredient', 'asdrtey12hdj')->call('addIngredient')
+        ->assertSet('ingredients', [])
+        ->assertSet('ingredientError', 'Bahan "asdrtey12hdj" tidak dikenali. Periksa lagi penulisannya.');
 });
