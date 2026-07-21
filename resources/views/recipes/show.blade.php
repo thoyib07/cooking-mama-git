@@ -1,5 +1,14 @@
 <x-layout>
     <article class="space-y-5">
+        {{-- Tombol kembali --}}
+        <button
+            type="button"
+            onclick="window.history.back()"
+            class="inline-flex items-center gap-1 text-sm font-semibold text-green-700"
+        >
+            ← Kembali
+        </button>
+
         {{-- Gambar --}}
         <div class="overflow-hidden rounded-2xl bg-amber-100 h-48 flex items-center justify-center">
             @if ($recipe->image_url)

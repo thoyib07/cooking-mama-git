@@ -22,8 +22,8 @@ Yang belum dibuat:
 
 ## Bottom navigation (lanjutan)
 
-Tab **Resep** dan **Favorit** di bottom nav saat ini adalah tautan mati (`href="#"`).
+Tab **Favorit** di bottom nav saat ini masih tautan mati (`href="#"`). Tab **Resep**
+sudah aktif (`/recipes`, `App\Livewire\RecipeList`) dengan infinite scroll + search.
 
 Yang perlu dibuat:
-- **Halaman daftar semua resep** — route `/recipes` → view dengan list seluruh resep di DB, agar tab "Resep" punya tujuan.
 - **Fitur favorit** — simpan resep favorit per sesi/user, agar tab "Favorit" punya konten.

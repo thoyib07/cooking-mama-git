@@ -46,12 +46,15 @@
         <button
             wire:click="exploreWithAi"
             wire:loading.attr="disabled"
-            @disabled(empty($ingredients))
+            @disabled(empty($ingredients) || ! $searched)
             class="w-full rounded-xl border border-orange-200 bg-orange-50 py-3 font-bold text-orange-600 active:bg-orange-100 disabled:opacity-40 disabled:cursor-not-allowed"
         >
             <span wire:loading.remove wire:target="exploreWithAi">✨ Eksplor dengan AI</span>
             <span wire:loading wire:target="exploreWithAi">Mencari ide resep AI...</span>
         </button>
+        @if (! empty($ingredients) && ! $searched)
+            <p class="mt-2 text-xs text-stone-400">Cari resep di database dulu sebelum eksplorasi AI.</p>
+        @endif
         @if ($aiNotice)
             <p class="mt-2 rounded-lg bg-amber-50 px-3 py-2 text-sm text-amber-700" role="status">{{ $aiNotice }}</p>
         @endif
@@ -64,7 +67,7 @@
     @if ($searched)
         <section class="space-y-3">
             @forelse ($results as $r)
-                <a href="{{ route('recipes.show', $r['id']) }}" class="block rounded-xl bg-white p-4 shadow-sm active:shadow-none">
+                <a wire:navigate href="{{ route('recipes.show', $r['id']) }}" class="block rounded-xl bg-white p-4 shadow-sm active:shadow-none">
                     <div class="flex items-center justify-between gap-2">
                         <span class="font-semibold text-stone-800">{{ $r['name'] }}</span>
                         @php $pct = (int) round($r['score'] * 100); @endphp
