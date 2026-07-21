@@ -29,7 +29,7 @@
             <span class="text-xl">📖</span>
             <span>Resep</span>
         </a>
-        <a href="#" class="flex flex-col items-center gap-0.5 text-xs text-stone-400">
+        <a wire:navigate href="{{ route('favorites.index') }}" class="flex flex-col items-center gap-0.5 text-xs {{ request()->routeIs('favorites.index') ? 'text-green-700 font-semibold' : 'text-stone-400' }}">
             <span class="text-xl">⭐</span>
             <span>Favorit</span>
         </a>

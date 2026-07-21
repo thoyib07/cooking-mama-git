@@ -19,13 +19,16 @@
         </div>
 
         {{-- Judul + meta --}}
-        <div>
-            <h1 class="text-2xl font-bold text-stone-800">{{ $recipe->name }}</h1>
-            @if ($recipe->servings)
-                <span class="mt-1 inline-block rounded-full bg-stone-100 px-3 py-0.5 text-xs text-stone-500">
-                    🍽️ {{ $recipe->servings }} porsi
-                </span>
-            @endif
+        <div class="flex items-start justify-between gap-2">
+            <div>
+                <h1 class="text-2xl font-bold text-stone-800">{{ $recipe->name }}</h1>
+                @if ($recipe->servings)
+                    <span class="mt-1 inline-block rounded-full bg-stone-100 px-3 py-0.5 text-xs text-stone-500">
+                        🍽️ {{ $recipe->servings }} porsi
+                    </span>
+                @endif
+            </div>
+            @livewire('favorite-button', ['recipeId' => $recipe->id])
         </div>
 
         {{-- Bahan --}}

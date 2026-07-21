@@ -7,14 +7,24 @@
         class="w-full rounded-xl border border-stone-200 bg-white px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-green-600 placeholder-stone-400"
     >
 
+    @unless ($lockFavoritesFilter)
+        <label class="flex items-center gap-2 text-sm text-stone-600">
+            <input type="checkbox" wire:model.live="onlyFavorites" class="rounded border-stone-300 text-green-700 focus:ring-green-600">
+            Hanya favorit
+        </label>
+    @endunless
+
     <section class="space-y-3">
         @forelse ($recipes as $recipe)
-            <a wire:navigate href="{{ route('recipes.show', $recipe->id) }}" class="block rounded-xl bg-white p-4 shadow-sm active:shadow-none">
-                <span class="font-semibold text-stone-800">{{ $recipe->name }}</span>
-                @if ($recipe->servings)
-                    <span class="ml-2 text-xs text-stone-400">🍽️ {{ $recipe->servings }} porsi</span>
-                @endif
-            </a>
+            <div class="flex items-center gap-2 rounded-xl bg-white p-4 shadow-sm active:shadow-none">
+                <a wire:navigate href="{{ route('recipes.show', $recipe->id) }}" class="min-w-0 flex-1">
+                    <span class="font-semibold text-stone-800">{{ $recipe->name }}</span>
+                    @if ($recipe->servings)
+                        <span class="ml-2 text-xs text-stone-400">🍽️ {{ $recipe->servings }} porsi</span>
+                    @endif
+                </a>
+                @livewire('favorite-button', ['recipeId' => $recipe->id], key('fav-list-'.$recipe->id))
+            </div>
         @empty
             <p class="rounded-xl bg-white p-4 text-center text-sm text-stone-400 shadow-sm">
                 Tidak ada resep yang cocok.

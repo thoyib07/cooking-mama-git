@@ -20,10 +20,9 @@ Yang belum dibuat:
 - **Mode masak interaktif** — tampilan langkah-per-langkah dengan timer, untuk
   diikuti sambil memasak. Bergantung pada metadata per langkah di atas.
 
-## Bottom navigation (lanjutan)
+## Bottom navigation
 
-Tab **Favorit** di bottom nav saat ini masih tautan mati (`href="#"`). Tab **Resep**
-sudah aktif (`/recipes`, `App\Livewire\RecipeList`) dengan infinite scroll + search.
-
-Yang perlu dibuat:
-- **Fitur favorit** — simpan resep favorit per sesi/user, agar tab "Favorit" punya konten.
+Tab **Resep** (`/recipes`, `App\Livewire\RecipeList`) dan **Favorit**
+(`/favorites`, `App\Livewire\FavoritesList`) sudah aktif. Favorit disimpan lewat
+cookie anonim jangka panjang (`App\Support\FavoritorToken`), bukan session Laravel
+yang cuma bertahan 120 menit — lihat `favorites` table & `App\Livewire\FavoriteButton`.

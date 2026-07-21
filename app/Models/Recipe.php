@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Support\RecipeSteps;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
@@ -33,5 +34,15 @@ class Recipe extends Model
     public function ratings(): HasMany
     {
         return $this->hasMany(Rating::class);
+    }
+
+    public function favorites(): HasMany
+    {
+        return $this->hasMany(Favorite::class);
+    }
+
+    public function scopeFavoritedBy(Builder $query, string $favoritorToken): void
+    {
+        $query->whereHas('favorites', fn ($q) => $q->where('favoritor_token', $favoritorToken));
     }
 }

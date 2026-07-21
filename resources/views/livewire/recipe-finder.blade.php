@@ -67,19 +67,22 @@
     @if ($searched)
         <section class="space-y-3">
             @forelse ($results as $r)
-                <a wire:navigate href="{{ route('recipes.show', $r['id']) }}" class="block rounded-xl bg-white p-4 shadow-sm active:shadow-none">
-                    <div class="flex items-center justify-between gap-2">
-                        <span class="font-semibold text-stone-800">{{ $r['name'] }}</span>
-                        @php $pct = (int) round($r['score'] * 100); @endphp
-                        <span class="shrink-0 rounded-full px-2 py-0.5 text-xs font-bold
-                            {{ $pct >= 80 ? 'bg-green-100 text-green-700' : 'bg-amber-100 text-amber-700' }}">
-                            {{ $pct }}% cocok
-                        </span>
-                    </div>
-                    @if (!empty($r['missing']))
-                        <p class="mt-1 text-xs text-stone-400">Kurang: {{ implode(', ', $r['missing']) }}</p>
-                    @endif
-                </a>
+                <div class="flex items-start gap-2 rounded-xl bg-white p-4 shadow-sm active:shadow-none">
+                    <a wire:navigate href="{{ route('recipes.show', $r['id']) }}" class="min-w-0 flex-1">
+                        <div class="flex items-center justify-between gap-2">
+                            <span class="font-semibold text-stone-800">{{ $r['name'] }}</span>
+                            @php $pct = (int) round($r['score'] * 100); @endphp
+                            <span class="shrink-0 rounded-full px-2 py-0.5 text-xs font-bold
+                                {{ $pct >= 80 ? 'bg-green-100 text-green-700' : 'bg-amber-100 text-amber-700' }}">
+                                {{ $pct }}% cocok
+                            </span>
+                        </div>
+                        @if (!empty($r['missing']))
+                            <p class="mt-1 text-xs text-stone-400">Kurang: {{ implode(', ', $r['missing']) }}</p>
+                        @endif
+                    </a>
+                    @livewire('favorite-button', ['recipeId' => $r['id']], key('fav-finder-'.$r['id']))
+                </div>
             @empty
                 <p class="rounded-xl bg-white p-4 text-center text-sm text-stone-400 shadow-sm">
                     Tidak ada resep yang cukup cocok. Coba Eksplor dengan AI!
