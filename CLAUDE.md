@@ -37,4 +37,5 @@ npm run dev / npm run build  # vite assets
 
 - Deploy config (Procfile, free-tier PaaS) and optional error monitoring are documented in `docs/DEPLOY.md`.
 - Design spec and implementation plan: `docs/superpowers/`.
-- Known deferred work (intentional): bottom nav "Resep" and "Favorit" tabs are dead links; Filament steps editor is a plain `Textarea` not a `Repeater`. See `docs/ROADMAP.md`.
+- Known deferred work (intentional): Filament steps editor is a plain `Textarea` not a `Repeater`. See `docs/ROADMAP.md`.
+- **Branching**: `main` is the reference branch — branch new work off it. `deploy-main` is what Render auto-deploys (see `docs/DEPLOY.md`) and must be kept equal to `main`; after merging a feature/fix into `main`, fast-forward `deploy-main` to match (or vice versa) so the two never diverge.
